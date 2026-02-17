@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\AdminUser;
+use App\Support\Permissions\PermissionService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -53,6 +54,8 @@ class AuthController extends Controller
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
+        app(PermissionService::class)->clearCurrentUserSessionCache();
 
         return redirect('/login');
     }
