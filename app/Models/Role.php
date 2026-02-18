@@ -19,4 +19,9 @@ class Role extends Model
             'permission_id'
         );
     }
+
+    public function adminUsers()
+    {
+        return $this->hasMany(AdminUser::class, 'role_id');
+    }
 }

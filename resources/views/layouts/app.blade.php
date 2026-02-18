@@ -10,16 +10,58 @@
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
         crossorigin="anonymous">
 </head>
-<body class="bg-light">
+<body class="bg-body-tertiary">
+@php
+  $perm = app(\App\Support\Permissions\PermissionService::class);
+  $canUsers = auth()->check() && $perm->hasPermission('users.read');
+  $canRoles = auth()->check() && $perm->hasPermission('roles.read');
+  $currentPath = '/' . ltrim(request()->path(), '/');
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  $homePath = '/health';
+  if ($canUsers) {
+    $homePath = '/users';
+  } elseif ($canRoles) {
+    $homePath = '/roles';
+  }
+@endphp
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom mb-4">
   <div class="container">
-    <a class="navbar-brand" href="/roles">User Management</a>
-    <div class="ms-auto">
-      <form method="post" action="/logout">
-        @csrf
-        <button class="btn btn-outline-light btn-sm" type="submit">Logout</button>
-      </form>
+    <a class="navbar-brand fw-semibold" href="{{ $homePath }}">User Management</a>
+
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#mainNavbar"
+      aria-controls="mainNavbar"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="mainNavbar">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        @if ($canUsers)
+          <li class="nav-item">
+            <a class="nav-link {{ $currentPath === '/users' ? 'active' : '' }}" href="/users">Users</a>
+          </li>
+        @endif
+
+        @if ($canRoles)
+          <li class="nav-item">
+            <a class="nav-link {{ $currentPath === '/roles' ? 'active' : '' }}" href="/roles">Roles</a>
+          </li>
+        @endif
+      </ul>
+
+      @auth
+        <form method="post" action="/logout" class="d-flex">
+          @csrf
+          <button class="btn btn-outline-danger btn-sm" type="submit">Logout</button>
+        </form>
+      @endauth
     </div>
   </div>
 </nav>

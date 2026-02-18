@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 use App\Support\Permissions\PermissionService;
 use Illuminate\Support\Facades\Route;
 
@@ -17,6 +18,18 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/roles/{role}/edit', [RoleController::class, 'edit'])->middleware('permission:roles.update');
     Route::post('/roles/{role}', [RoleController::class, 'update'])->middleware('permission:roles.update');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/users', [UserController::class, 'index'])->middleware('permission:users.read');
+
+    Route::get('/users/create', [UserController::class, 'create'])->middleware('permission:users.create');
+    Route::post('/users', [UserController::class, 'store'])->middleware('permission:users.create');
+
+    Route::get('/users/{user}/edit', [UserController::class, 'edit'])->middleware('permission:users.update');
+    Route::post('/users/{user}', [UserController::class, 'update'])->middleware('permission:users.update');
+
+    Route::post('/users/{user}/toggle-active', [UserController::class, 'toggleActive'])->middleware('permission:users.update');
 });
 
 Route::get('/health', function () {

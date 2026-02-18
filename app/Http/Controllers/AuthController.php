@@ -45,7 +45,7 @@ class AuthController extends Controller
         Auth::login($user);
         $request->session()->regenerate();
 
-        return redirect('/health');
+        return redirect('/users');
     }
 
     public function logout(Request $request)

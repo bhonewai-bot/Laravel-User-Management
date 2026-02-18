@@ -22,4 +22,9 @@ class AdminUser extends Authenticatable
         'gender' => 'boolean',
         'is_active' => 'boolean',
     ];
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class, 'role_id');
+    }
 }

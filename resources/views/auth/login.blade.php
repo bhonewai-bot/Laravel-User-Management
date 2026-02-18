@@ -1,33 +1,35 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Login</title>
-</head>
-<body style="font-family: system-ui; padding: 40px;">
-  <h2>Login</h2>
+@extends('layouts.app')
 
-  @if ($errors->any())
-    <div style="color: red; margin-bottom: 16px;">
-      {{ $errors->first() }}
+@section('content')
+<div class="row justify-content-center mt-4">
+  <div class="col-12 col-md-8 col-lg-5">
+    <div class="card shadow-sm border-0">
+      <div class="card-body p-4">
+        <h1 class="h4 mb-3">Login</h1>
+
+        @if ($errors->any())
+          <div class="alert alert-danger mb-3">
+            {{ $errors->first() }}
+          </div>
+        @endif
+
+        <form method="post" action="/login">
+          @csrf
+
+          <div class="mb-3">
+            <label for="username" class="form-label">Username</label>
+            <input id="username" name="username" class="form-control" value="{{ old('username') }}" required>
+          </div>
+
+          <div class="mb-4">
+            <label for="password" class="form-label">Password</label>
+            <input id="password" name="password" type="password" class="form-control" required>
+          </div>
+
+          <button type="submit" class="btn btn-primary w-100">Login</button>
+        </form>
+      </div>
     </div>
-  @endif
-
-  <form method="post" action="/login">
-    @csrf
-
-    <div style="margin-bottom: 10px;">
-      <label>Username</label><br>
-      <input name="username" value="{{ old('username') }}" required>
-    </div>
-
-    <div style="margin-bottom: 10px;">
-      <label>Password</label><br>
-      <input name="password" type="password" required>
-    </div>
-
-    <button type="submit">Login</button>
-  </form>
-</body>
-</html>
+  </div>
+</div>
+@endsection
