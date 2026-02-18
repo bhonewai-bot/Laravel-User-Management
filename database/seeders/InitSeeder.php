@@ -20,9 +20,8 @@ class InitSeeder extends Seeder
             $cashierRoleId = DB::table('roles')->insertGetId(['name' => 'cashier', 'created_at' => now(), 'updated_at' => now()]);
 
             // Features
-            $userFeatureId = DB::table('features')->insertGetId(['name' => 'user', 'created_at' => now(), 'updated_at' => now()]);
+            $userFeatureId = DB::table('features')->insertGetId(['name' => 'users', 'created_at' => now(), 'updated_at' => now()]);
             $rolesFeatureId = DB::table('features')->insertGetId(['name' => 'roles', 'created_at' => now(), 'updated_at' => now()]);
-            $productFeatureId = DB::table('features')->insertGetId(['name' => 'product', 'created_at' => now(), 'updated_at' => now()]);
 
             // Permissions (feature.action)
             $permIds = [];
@@ -38,7 +37,6 @@ class InitSeeder extends Seeder
 
             foreach (['create','read','update','delete'] as $a) $insertPerm($a, $userFeatureId);
             foreach (['create','read','update','delete'] as $a) $insertPerm($a, $rolesFeatureId);
-            foreach (['create','read','update','delete'] as $a) $insertPerm($a, $productFeatureId);
 
             // Assign permissions to roles (match your lab table)
             // Admin: everything
